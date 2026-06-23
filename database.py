@@ -1,8 +1,10 @@
 import sqlite3
 
+# this function establishes a connection to the SQLite database
 def get_connection():
     return sqlite3.connect('pokemon_pocket.db')
 
+# this function creates the necessary tables in the database if they do not already exist
 def create_tables():
     
     conn = get_connection()
@@ -39,6 +41,7 @@ def create_tables():
     conn.commit()
     conn.close()
 
+# this function inserts a Pokémon card into the database
 def insert_pokemon_card(name, set_name, rarity, stage, hp, types, attacks, weaknesses, retreat, boosters, description):
     conn = get_connection()
     cursor = conn.cursor()
@@ -51,6 +54,7 @@ def insert_pokemon_card(name, set_name, rarity, stage, hp, types, attacks, weakn
     conn.commit()
     conn.close()
 
+# this function inserts a Trainer card into the database
 def insert_trainer_card(name, set_name, rarity, trainer_type, effect):
     conn = get_connection()
     cursor = conn.cursor()
