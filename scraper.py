@@ -40,9 +40,9 @@ def get_card_by_id(card_id):
 def scrape_all_cards():
     create_tables()
     for n in get_all_sets():
-        time.sleep(5)
+        time.sleep(0.5)
         for set in get_cards_for_set(n['id']):
-            time.sleep(5)
+            time.sleep(0.5)
             card = get_card_by_id(set['id'])
             
             if card['category'] == "Pokemon":
