@@ -1,2 +1,3 @@
 .env
 pokemon_pocket.db
+__pycache__
