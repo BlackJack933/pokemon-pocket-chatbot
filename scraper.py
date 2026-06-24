@@ -51,10 +51,9 @@ def scrape_all_cards():
                 retreat = card.get('retreat')
                 boosters = json.dumps(card.get('boosters', []))
                 types = json.dumps(card.get('types', []))
-                insert_pokemon_card(card['name'], card['set']['name'], card['rarity'], card['stage'], card['hp'], types, attacks, weaknesses, retreat, boosters, card.get('description'))
+                insert_pokemon_card(card['id'], card['name'], card['set']['name'], card['rarity'], card['stage'], card['hp'], types, attacks, weaknesses, retreat, boosters, card.get('description'))
             else:
-                insert_trainer_card(card['name'], card['set']['name'], card['rarity'], card['trainerType'], card['effect'])
-                
+                insert_trainer_card(card['id'], card['name'], card['set']['name'], card['rarity'], card['trainerType'], card['effect'])
 
 if __name__ == "__main__":
     scrape_all_cards()
