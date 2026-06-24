@@ -43,25 +43,24 @@ def create_tables():
     cursor.execute('''
                    CREATE TABLE IF NOT EXISTS decks (
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        name TEXT NOT NULL,
-                        slug TEXT NOT NULL UNIQUE,
-                        meta_share FLOAT NOT NULL,
+                        name TEXT NOT NULL UNIQUE,
+                        tier INTEGER NOT NULL,
+                        power_level FLOAT NOT NULL,
                         win_rate FLOAT NOT NULL,
-                        cards TEXT NOT NULL
+                        best_matchup TEXT,
+                        worst_matchup TEXT,
+                        cards TEXT NOT NULL,
+                        sample_deck TEXT
                     );
                 ''')
 
     cursor.execute('''
                    CREATE TABLE IF NOT EXISTS matchups (
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        deck_id INT NOT NULL,
-                        opponent_deck_id INT NOT NULL ,
-                        wins INT NOT NULL,
-                        losses INT NOT NULL,
-                        ties INT NOT NULL,
+                        deck_id INTEGER NOT NULL,
+                        opponent_name TEXT NOT NULL,
                         win_rate FLOAT NOT NULL,
-                        FOREIGN KEY (deck_id) REFERENCES decks(id),
-                        FOREIGN KEY (opponent_deck_id) REFERENCES decks(id)
+                        FOREIGN KEY (deck_id) REFERENCES decks(id)
                     );
                 ''')
 
@@ -94,26 +93,26 @@ def insert_trainer_card(card_id, name, set_name, rarity, trainer_type, effect):
     conn.commit()
     conn.close()
 
-def insert_deck(name, slug, meta_share, win_rate, cards):
+def insert_deck(name, tier, power_level, win_rate, best_matchup, worst_matchup, cards, sample_deck):
     conn = get_connection()
     cursor = conn.cursor()
 
     cursor.execute('''
-        INSERT OR IGNORE INTO decks (name, slug, meta_share, win_rate, cards)
-        VALUES (?, ?, ?, ?, ?)
-    ''', (name, slug, meta_share, win_rate, cards))
+        INSERT OR IGNORE INTO decks (name, tier, power_level, win_rate, best_matchup, worst_matchup, cards, sample_deck)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    ''', (name, tier, power_level, win_rate, best_matchup, worst_matchup, cards, sample_deck))
 
     conn.commit()
     conn.close()
 
-def insert_matchup(deck_id, opponent_deck_id, wins, losses, ties, win_rate):
+def insert_matchup(deck_id, opponent_name, win_rate):
     conn = get_connection()
     cursor = conn.cursor()
 
     cursor.execute('''
-        INSERT OR IGNORE INTO matchups (deck_id, opponent_deck_id, wins, losses, ties, win_rate)
-        VALUES (?, ?, ?, ?, ?, ?)
-    ''', (deck_id, opponent_deck_id, wins, losses, ties, win_rate))
+        INSERT OR IGNORE INTO matchups (deck_id, opponent_name, win_rate)
+        VALUES (?, ?, ?)
+    ''', (deck_id, opponent_name, win_rate))
 
     conn.commit()
     conn.close()
